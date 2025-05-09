@@ -1,0 +1,106 @@
+<p *ngIf="!isLoggedIn">You are not logged in :( Please <a href="javascript:void(0)" (click)="logout()">Login</a>
+<div *ngIf="isLoggedIn" class="container">
+
+    <div class="main-header">
+        <div class="username">
+            <img src="/assets/profile_pic.png" alt="Profile Picture" class="profile-pic">
+            <h1>{{ userData!.firstName +" "+ userData!.lastName }}</h1>
+        </div>
+
+        <button class="logout" (click)="logout()">Logout</button>
+    </div>
+
+    <div class="nav">
+        <button *ngIf="isCustomer" class="btn" (click)="showForm('booking')">Search Accommodation</button>
+        <button *ngIf="isCustomer" class="btn" (click)="showForm('profile')">Update Profile</button>
+        <button *ngIf="isCustomer" class="btn" (click)="showForm('history'); fetchBookingHistory()">View Booking History</button>
+        <button *ngIf="isOwner" class="btn" (click)="switchToAdminDashboard()">Manage your hotels</button>
+    </div>
+
+    <div class="search-form" *ngIf="currentForm === 'booking'">
+        <form>
+            <h1>Inn-Quest</h1>
+            <h2>Find the best accommodations near you.</h2>
+            <div class="form-group">
+                <label for="checkIn">Check-in:</label>
+                <input type="date" id="checkIn" name="checkIn" #checkinDate="ngModel" [(ngModel)]="checkInDate">
+                <div *ngIf="checkinDate.value>checkoutDate.value">
+                    <small>Check in date cannot be greater than Check out Date</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="checkOut">Check-out:</label>
+                <input type="date" id="checkOut" name="checkOut" #checkoutDate="ngModel" [(ngModel)]="checkOutDate">
+                <div *ngIf="checkoutDate.value<checkinDate.value">
+                    <small>Check out date cannot be lesser than Check in Date</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sortBy">Sort by:</label>
+                <select id="sortBy" name="sortBy" [(ngModel)]="sortBy">
+                    <option value="price">Price</option>
+                    <option value="rating">Rating</option>
+                    <option value="distance">Distance</option>
+                </select>
+            </div>
+            <button [disabled]="checkOutDate<checkInDate" (click)="searchAccommodation()">Find my stay</button>
+        </form>
+    </div>
+    <app-list-accommodation [accommodations]="searchAccommodations" (isSubmit)="searchAccommodation()"
+        *ngIf="currentForm === 'booking' && resultsFound"></app-list-accommodation>
+    <h2  *ngIf="!resultsFound">No results found</h2>
+
+    <div class="update-profile-form" *ngIf="currentForm === 'profile'">
+        <h2>Update Profile</h2>
+        <form [formGroup]="profileForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" formControlName="firstName" id="firstName">
+            <br>
+            <label for="lastName">Last Name:</label>
+            <input type="text" formControlName="lastName" id="lastName">
+            <br>
+            <label for="email">Email:</label>
+            <input type="email" formControlName="email" id="email">
+            <small *ngIf="profileForm.get('email')!.hasError('email')" class="text-danger">
+                Invalid email format.
+            </small>
+            <small *ngIf="profileForm.get('email')!.hasError('pattern')" class="text-danger">
+                Please enter a valid email address.
+            </small>
+            <br>
+            <label for="mobile">Phone number:</label>
+            <input type="text" formControlName="mobile" id="mobile">
+            <small *ngIf="profileForm.get('mobile')!.hasError('pattern')" class="text-danger">
+                Invalid mobile number format.
+            </small>
+            <br>
+            <button type="submit" (click)="updateProfile()"
+                [disabled]="!profileForm.valid || isProfileFormUnchanged()">Update</button>
+        </form>
+    </div>
+
+    <div class="booking-history" *ngIf="currentForm === 'history'">
+        <h2>Booking History</h2>
+        <table>
+            
+            <tr>
+                <th>ID</th>
+                <th>Booked at</th>
+                <th>Accommodation detail</th>
+                <th>CheckIn</th>
+                <th>CheckOut</th>
+                <th>Guests</th>
+                <th>Amount paid</th>
+            </tr>
+            <tr *ngFor="let booking of bookingHistory">
+                <td>{{ booking.bookingId }}</td>
+                <td>{{booking.bookingDate.slice(0, 10)}}</td>
+                <td>{{ booking.accommodationDetails}}</td>
+                <td>{{ booking.checkInDate }}</td>
+                <td>{{ booking.checkOutDate }}</td>
+                <td>{{ booking.totalPeople }}</td>
+                <td>{{ booking.totalPrice | currency:'INR' }}</td>
+            </tr>
+        </table>
+    </div>
+</div>

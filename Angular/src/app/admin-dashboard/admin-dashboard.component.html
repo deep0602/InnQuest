@@ -1,0 +1,145 @@
+<p *ngIf="!isLoggedIn">You are not logged in :( Please <a href="javascript:void(0)" (click)="logout()">Login</a>
+<div *ngIf="isLoggedIn" class="container">
+  <div class="main-header">
+    <div class="username">
+      <img src="/assets/profile_pic.png" alt="Profile Picture" class="profile-pic">
+      <h1>{{ userData!.firstName +" "+ userData!.lastName }}</h1>
+    </div>
+
+    <button class="logout" (click)="logout()">Logout</button>
+  </div>
+
+  <div class="header">
+    <h1>Dashboard - Hotel Owner</h1>
+  </div>
+
+  <div class="nav">
+    <button class="btn"
+      (click)=" fetchAccommodations() ;showAccommodations = true; showUpdateAccommodationForm = false; showAddNewRoomForm = false">View
+      Accommodations</button>
+    <!-- <button class="btn"
+      (click)="showUpdateAccommodationForm = true; showAccommodations = false; showAddNewRoomForm = false">Update
+      Accommodation Description</button> -->
+    <button class="btn"
+      (click)="showAddNewRoomForm = true; showAccommodations = false; showUpdateAccommodationForm = false">Add New
+      Accomodation</button>
+  </div>
+
+  <div class="accommodations" *ngIf="showAccommodations">
+    <h2>Accommodations You Own</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Available from</th>
+          <th>Available to</th>
+          <th>Location</th>
+          <th>Amenities</th>
+          <th>pricePerNight</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let accommodation of accommodations">
+          <td>{{ accommodation.accommodationName }}</td>
+          <td>{{ accommodation.description }}</td>
+          <td>{{ accommodation.checkInDate }}</td>
+          <td>{{ accommodation.checkOutDate }}</td>
+          <td>{{ accommodation.location }}</td>
+          <td>{{ accommodation.amenities }}</td>
+          <td>{{ accommodation.pricePerNight | currency:'INR' }}</td>
+          <td>
+            <button class="remove"
+              (click)="updateAccommodation=accommodation; showAccommodations=false; deleteAccommodation();">&times;</button>
+            <button class="edit"
+              (click)="updateAccommodation=accommodation; setUpdateForm(); showUpdateAccommodationForm = true; showAccommodations = false; showAddNewRoomForm = false; fetchAccommodations()">&#x270E;</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="update-accommodation-form" *ngIf="showUpdateAccommodationForm">
+    <h2>Update Accommodation Description</h2>
+    <form [formGroup]="updateAccommodationForm">
+      <label for="accommodationName">Accommodation Name:</label>
+      <input type="text" formControlName="accommodationName" id="accommodationName">
+      <br>
+      <label for="description">Description:</label>
+      <input type="text" formControlName="description" id="description">
+      <br>
+      <label for="location">Location:</label>
+      <input type="text" formControlName="location" id="location">
+      <br>
+      <label for="checkInDate">Available from:</label>
+      <input type="date" formControlName="checkInDate" id="checkInDate">
+      <br>
+      <label for="checkOutDate">Available to:</label>
+      <input type="date" formControlName="checkOutDate" id="checkOutDate">
+      <br>
+      <label for="amenities">Amenities:</label>
+      <textarea formControlName="amenities" id="amenities"></textarea>
+      <br>
+      <label for="price">Price per Night:</label>
+      <input type="number" formControlName="price" id="price">
+      <br>
+      <label for="distance">Distance:</label>
+      <input type="number" formControlName="distance" id="distance">
+      <br>
+      <button type="submit" [disabled]="!updateAccommodationForm.valid || isUpdationFormUnchanged()"
+        (click)="updateAccommodationDescription()">Update</button>
+    </form>
+  </div>
+
+  <div class="add-new-room-form" *ngIf="showAddNewRoomForm">
+    <h2>Add New Accomodation</h2>
+    <form [formGroup]="addNewAccomodationForm">
+      <label for="accommodationName">Accommodation Name:</label>
+      <input type="text" formControlName="accommodationName" id="accommodationName">
+      <small *ngIf="addNewAccomodationForm.get('accommodationName')!.hasError('required') && addNewAccomodationForm.get('accommodationName')!.touched" class="text-danger">
+        Accommodation name is required
+      </small>
+      <br>
+      <label for="description">Description:</label>
+      <input type="text" formControlName="description" id="description">
+      <small *ngIf="addNewAccomodationForm.get('description')!.hasError('required') && addNewAccomodationForm.get('description')!.touched" class="text-danger">
+        Description is required
+      </small>
+      <br>
+      <label for="location">Location:</label>
+      <input type="text" formControlName="location" id="location">
+      <small *ngIf="addNewAccomodationForm.get('location')!.hasError('required') && addNewAccomodationForm.get('location')!.touched" class="text-danger">
+        Location is required
+      </small>
+      <br>
+      <label for="checkInDate">Available from:</label>
+      <input type="date" formControlName="checkInDate" id="checkInDate">
+      <br>
+      <label for="checkOutDate">Available to:</label>
+      <input type="date" formControlName="checkOutDate" id="checkOutDate">
+      <br>
+      <label for="amenities">Amenities:</label>
+      <textarea formControlName="amenities" id="amenities"></textarea>
+      <small *ngIf="addNewAccomodationForm.get('amenities')!.hasError('required') && addNewAccomodationForm.get('amenities')!.touched" class="text-danger">
+        Amenities is required
+      </small>
+      <br>
+      <label for="price">Price per Night:</label>
+      <input type="number" formControlName="price" id="price">
+      <small *ngIf="addNewAccomodationForm.get('price')!.hasError('required') && addNewAccomodationForm.get('price')!.touched" class="text-danger">
+        Price is required
+      </small>
+      <br>
+      <label for="distance">Distance:</label>
+      <input type="number" formControlName="distance" id="distance">
+      <small *ngIf="addNewAccomodationForm.get('distance')!.hasError('required') && addNewAccomodationForm.get('distance')!.touched" class="text-danger">
+        Distance is required
+      </small>
+      <br>
+
+      <button type="submit" [disabled]="!addNewAccomodationForm.valid" (click)="addAccommodation()">Add
+        Accomodation</button>
+    </form>
+  </div>
+</div>

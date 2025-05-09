@@ -1,0 +1,49 @@
+<p *ngIf="!isLoggedIn">You are not logged in :( Please <a href="javascript:void(0)" (click)="logout()">Login</a>
+<p *ngIf="isPaid==='success'">Payment successful :) Go to <a href="javascript:void(0)" (click)="goHome()">Home</a>
+<p *ngIf="isPaid==='failed'">Payment failed :) Go to <a href="javascript:void(0)" (click)="goHome()">Home</a>
+<div *ngIf="isLoggedIn && isPaid==='progress'" class="container">
+    <h2>Payment Details</h2>
+    <!-- Add payment form here -->
+    <form>
+
+        <label>Customer Name:</label>
+        <input type="text" id="customerName" name="customerName" readonly
+            value="{{this.customerfName + ' ' + this.customerlName}}">
+        <br><br>
+        <label>Billing Amount:</label>
+        <input type="text" id="billingAmount" name="billingAmount" readonly value="{{ booking?.totalPrice }}">
+        <br><br>
+        <label for="paymentType">Payment Type:</label>
+        <select id="paymentType" name="paymentType" [(ngModel)]="paymentType">
+            <option value="creditCard">Credit Card</option>
+            <option value="debitCard">Debit Card</option>
+            <option value="paypal">PayPal</option>
+        </select>
+        <div class="details">
+            <!-- Credit Card Details -->
+            <div *ngIf="paymentType === 'creditCard'" class="card-details">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number:</label>
+                    <input type="text" id="cardNumber">
+                </div>
+
+                <div class="form-group">
+                    <label for="cvv" maxlength="3">CVV:</label>
+                    <input type="text" id="cvv">
+                </div>
+            </div>
+
+            <!-- PayPal Details -->
+            <div *ngIf="paymentType === 'paypal'">
+                <div class="form-group">
+                    <label for="paypalEmail">PayPal Email:</label>
+                    <input type="text" id="paypalEmail">
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <button type="button" (click)="processPayment()">Proceed to Pay</button>
+    </form>
+
+
+</div>

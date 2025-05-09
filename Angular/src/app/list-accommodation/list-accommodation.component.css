@@ -1,0 +1,164 @@
+/* Global Styles */
+
+  
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+
+    background-color: #2b1313;
+  }
+  
+  /* Hotel List Styles */
+  
+  .hotel-list {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hotel-list h2 {
+    margin-top: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #337ab7;
+  }
+  
+  .hotel-list p {
+    margin-bottom: 20px;
+  }
+  
+  .hotel-list span {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .hotel-list span:last-child {
+    margin-right: 0;
+  }
+  
+  .hotel-list span:last-child::after {
+    content: none;
+  }
+  
+  /* Hotel Item Styles */
+  
+  .hotel-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .hotel-item:last-child {
+    border-bottom: none;
+  }
+  
+  .hotel-item h3 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #337ab7;
+  }
+  
+  .hotel-item p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .hotel-item .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #337ab7;
+  }
+  
+  .hotel-item .rating {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Rating Styles */
+  
+  .rating {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .rating span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 2px;
+    background-color: #337ab7;
+    border-radius: 50%;
+  }
+  
+  .rating span.active {
+    background-color: #ff9900;
+  }
+  .hotel-item img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+ 
+  
+  .book-button  {
+    float: right; /* align the button to the right */
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* add a pointer cursor on hover */
+    
+  }
+  
+  .book-button :hover {
+    background-color: #3e8e41; /* change the background color on hover */
+  }  
+
+  .navbar {
+    background-color: #333;
+    padding: 10px;
+    display: flex;
+  } 
+  .book-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .book-button:hover {
+    background-color: #3e8e41;
+  }
+  
+  .interactive-header{
+    color: #fff;
+  }
+
+  .amenities {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+  }
+  
+  .amenities span {
+    display: inline-block;
+    margin-right: 5px;
+    padding: 4px 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }

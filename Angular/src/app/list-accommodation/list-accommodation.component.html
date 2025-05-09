@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="hotel-list">
+      <div class="navbar">
+        <h1 class="interactive-header">Search results<span class="icon"></span></h1>
+      </div><br>
+      <div *ngFor="let accommodation of accommodations; let i=index" class="hotel-item">
+        <div class="hotel-image">
+          <img [src]="accommodation.imagePath" alt="{{ accommodation.accommodationName}}">
+        </div>
+        <div class="hotel-info">
+          <h3>{{ accommodation.accommodationName }}</h3>
+          <p class="amenities">Amenities: <span *ngFor="let amenity of accommodation.amenities.split(',')">{{ amenity }}</span></p>
+          <div class="rating">
+            <span class="star" *ngFor="let i of [1, 2, 3, 4, 5]" [class.active]="i <= accommodation.rating"></span>
+            {{ accommodation.rating }}
+          </div>
+          <div class="price">
+            <span>{{ accommodation.pricePerNight | currency:'INR' }}</span>
+            <button class="book-button" (click)="bookHotel(i)">Book Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
